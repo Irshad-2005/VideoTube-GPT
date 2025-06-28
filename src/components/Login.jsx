@@ -1,12 +1,25 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Header from './Header'
-
+import { checkValidateData } from '../utils/validate';
 const Login = () => {
-    const [isSignInForm , setIsSignInForm] = useState(true)
-        
+    const [isSignInForm , setIsSignInForm] = useState(true);
+    const [errorMessage,setErrorMessage] = useState(null);
+
     const toggleToSignIn = ()=>
     {
         setIsSignInForm(!isSignInForm)
+    }
+
+    const email = useRef(null);
+    const password = useRef(null);
+
+    const handleSignInSignUpForm = ()=>
+    {
+        //validate email and password
+        // console.log(email.current.value);
+        // console.log(password.current.value);
+        const message = checkValidateData(email.current.value,password.current.value);
+        setErrorMessage(message)
     }
     return (
         <div >
@@ -16,13 +29,28 @@ const Login = () => {
                     alt="background"/>
             </div>
 
-                <form className='absolute p-12 bg-black my-32 mx-auto right-0 left-0 w-3/12 opacity-85 text-white'>
+                <form onSubmit={(e)=>{e.preventDefault()}}
+                className='absolute p-12 bg-black my-32 mx-auto right-0 left-0 w-3/12 opacity-85 text-white'>
                     <h1 className='font-bold text-3xl p-2 my-2 '> {isSignInForm ? "Sign In":"Sign Up"}</h1>
                     {!isSignInForm && <input type="text" placeholder='Full Name' className='p-3 my-4 bg-gray-600 w-full rounded-sm'/>}
-                    <input type="email" placeholder='Email Address' className='p-3 my-4 bg-gray-600 w-full rounded-sm'/>
-                    <input type="password" placeholder='Password' className='p-3 my-4 bg-gray-600 w-full rounded-sm' />
-                    <button className='p-4 my-6 bg-red-700 w-full rounded-lg cursor-pointer'>{isSignInForm  ? "Sign In" :"Sign Up"}</button>
-                    <p className='py-4 cursor-pointer' onClick={toggleToSignIn}> {isSignInForm ? "New to Netflix? Sing Up Now":"Already registered? Sign Up Now"}</p>
+                    <input 
+                    ref={email}
+                    type="email" 
+                    placeholder='Email Address' 
+                    className='p-3 my-4 bg-gray-600 w-full rounded-sm'/>
+                    <input 
+                    ref = {password}
+                    type="password" 
+                    placeholder='Password' 
+                    className='p-3 my-4 bg-gray-600 w-full rounded-sm' />
+                    <p className='text-lg text-red-500'>{errorMessage}</p>
+                    <button className='p-4 my-6 bg-red-700 w-full rounded-lg cursor-pointer' 
+                    onClick={handleSignInSignUpForm}>
+                        {isSignInForm  ? "Sign In" :"Sign Up"}
+                        </button>
+                    <p className='py-4 cursor-pointer' 
+                    onClick={toggleToSignIn}> 
+                    {isSignInForm ? "New to Netflix? Sing Up Now":"Already registered? Sign Up Now"}</p>
                 </form>
         </div>
     )

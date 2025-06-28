@@ -5,7 +5,9 @@
     - header
     - sign in and sign up form
     - routing
-    
+    - validation 
+    - firebase setup 
+    - deploy project in firebase
 
 
 
